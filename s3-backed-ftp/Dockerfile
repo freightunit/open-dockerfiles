@@ -3,8 +3,8 @@ FROM factual/docker-base
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
  automake \
  autotools-dev \
- g++ \ 
- git \ 
+ g++ \
+ git \
  libcurl4-gnutls-dev \
  libfuse-dev \
  libssl-dev \
@@ -16,15 +16,17 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
  openssh-server \
  supervisor \
  && rm -rf /var/lib/apt/lists/*
- 
+
+RUN pip3 install --upgrade pip
+RUN pip3 install setuptools
 RUN pip3 install awscli
 
 RUN git clone https://github.com/s3fs-fuse/s3fs-fuse.git && \
     cd s3fs-fuse && \
     ./autogen.sh && \
-    ./configure  && \ 
+    ./configure  && \
     make && \
-    sudo make install
+    make install
 
 RUN mkdir -p /home/aws/s3bucket/
 
@@ -44,6 +46,6 @@ RUN echo "/usr/sbin/nologin" >> /etc/shells
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-EXPOSE 21 22 
+EXPOSE 21 22
 
 CMD ["/usr/bin/supervisord"]
