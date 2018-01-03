@@ -21,8 +21,9 @@ RUN pip3 install --upgrade pip
 RUN pip3 install setuptools
 RUN pip3 install awscli
 
-RUN git clone https://github.com/s3fs-fuse/s3fs-fuse.git && \
+RUN git clone https://github.com/zencargo/s3fs-fuse.git && \
     cd s3fs-fuse && \
+    git checkout disable_list_bucket && \
     ./autogen.sh && \
     ./configure  && \
     make && \
